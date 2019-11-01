@@ -80,14 +80,18 @@ class TextDataset(Dataset):
                 text = f.read()
             print('start tokenize')
             sub_texts = text.split('<|endoftext|>')
+            print(len(sub_texts))
+            n_s = 0
             for sub_text in sub_texts:
                 tokenized_text = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(sub_text))
 
                 for i in range(0, len(tokenized_text)-block_size+1, block_size): # Truncate in block of block_size
                     self.examples.append(tokenizer.build_inputs_with_special_tokens(tokenized_text[i:i+block_size]))
+                    n_s += 1
                 # Note that we are loosing the last truncated example here for the sake of simplicity (no padding)
                 # If your dataset is small, first you should loook for a bigger one :-) and second you
                 # can change this behavior by adding (model specific) padding.
+            print('num_example: ', n_s)
             print('saving cache')
             logger.info("Saving features into cached file %s", cached_features_file)
             with open(cached_features_file, 'wb') as handle:
