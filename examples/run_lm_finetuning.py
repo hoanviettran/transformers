@@ -78,6 +78,7 @@ class TextDataset(Dataset):
             self.examples = []
             with open(file_path, encoding="utf-8") as f:
                 text = f.read()
+            print('start tokenize')
             sub_texts = text.split('<|endoftext|>')
             for sub_text in sub_texts:
                 tokenized_text = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(sub_text))
@@ -87,7 +88,7 @@ class TextDataset(Dataset):
                 # Note that we are loosing the last truncated example here for the sake of simplicity (no padding)
                 # If your dataset is small, first you should loook for a bigger one :-) and second you
                 # can change this behavior by adding (model specific) padding.
-
+            print('saving cache')
             logger.info("Saving features into cached file %s", cached_features_file)
             with open(cached_features_file, 'wb') as handle:
                 pickle.dump(self.examples, handle, protocol=pickle.HIGHEST_PROTOCOL)
