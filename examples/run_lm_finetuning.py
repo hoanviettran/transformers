@@ -81,6 +81,7 @@ class TextDataset(Dataset):
             print('start tokenize')
             sub_texts = text.split('<|endoftext|>')
             print(len(sub_texts))
+            print('Num sub texts', len(sub_texts))
             n_s = 0
             for sub_text in sub_texts:
                 tokenized_text = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(sub_text))
@@ -96,7 +97,7 @@ class TextDataset(Dataset):
             logger.info("Saving features into cached file %s", cached_features_file)
             with open(cached_features_file, 'wb') as handle:
                 pickle.dump(self.examples, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+                
     def __len__(self):
         return len(self.examples)
 
